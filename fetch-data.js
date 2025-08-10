@@ -1,16 +1,20 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const userList = document.getElementById("user-list");
+document.addEventListener("DOMContentLoaded", fetchUserData);
 
-    fetch("https://jsonplaceholder.typicode.com/users")
-        .then(response => response.json())
-        .then(data => {
-            data.forEach(user => {
-                const li = document.createElement("li");
-                li.textContent = user.name;
-                userList.appendChild(li);
-            });
-        })
-        .catch(error => {
-            console.error("Error fetching data:", error);
+async function fetchUserData() {
+    const apiUrl = 'https://jsonplaceholder.typicode.com/users';
+    const dataContainer = document.getElementById("user-list");
+
+    try {
+        const response = await fetch(apiUrl);
+        const users = await response.json();
+
+        users.forEach(user => {
+            const li = document.createElement("li");
+            li.textContent = user.name;
+            dataContainer.appendChild(li);
         });
-});
+
+    } catch (error) {
+        console.error("Error fetching data:", error);
+    }
+}
